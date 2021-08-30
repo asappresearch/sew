@@ -2,7 +2,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-The repo contains the code of the paper "[Performance-Efficiency Trade-offsin Unsupervised Pre-training for Speech Recognition]()" by Felix Wu, Kwangyoun Kim, Jing Pan, Kyu Han, Kilian Q Weinberger, and Yoav Artzi.
+The repo contains the code of the paper "[Performance-Efficiency Trade-offs in Unsupervised Pre-training for Speech Recognition]()" by Felix Wu, Kwangyoun Kim, Jing Pan, Kyu Han, Kilian Q Weinberger, and Yoav Artzi.
 
 ## Model Checkpoints
 <!-- <details><summary>Unsupervisedly Pre-trained on Librispeech 960h (click to unfold) </summary><p> -->
