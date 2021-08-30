@@ -126,11 +126,13 @@ to
 which reduces the batch size and increases the gradient accumulation steps in order to use less GPU memory.
 
 ### Evaluation
-Please run this script to download the official LibriSpeech 4-gram language model.
+1. Please run this script to prepare the official LibriSpeech 4-gram language model.
 ```sh
-bash scripts/download_librispeech_lm.sh
+bash scripts/prepare_librispeech_lm.sh $kenlm_build_bin
 ```
-and then run this script to evaluate a pre-trained ASR model
+where `$kenlm_build_bin` is the folder that contains the KenLM `build_binary` executable file (e.g. `/home/user/kenlm/build/bin`).
+
+2. Then run this script to evaluate a pre-trained ASR model
 ```sh
 python tools/eval_w2v.py tunelm --subsets '["dev-clean", "dev-other", "test-clean", "test-other"]' --model $asr_checkpoint
 ```
