@@ -16,9 +16,6 @@ import torchaudio
 
 from functools import partial
 
-from torch.multiprocessing import Pool
-
-from fairseq.data import FairseqDataset
 from fairseq.data.audio.raw_audio_dataset import RawAudioDataset
 
 import librosa
@@ -137,7 +134,6 @@ class FileAudioFeatDataset(FileAudioDatasetV2):
         self.mfcc_dim = mfcc_dim
         self.frame_length = frame_length
         self.frame_shift = frame_shift
-        self.pool = None
 
     def collater(self, samples):
         samples = [s for s in samples if s["source"] is not None]
@@ -176,27 +172,18 @@ class FileAudioFeatDataset(FileAudioDatasetV2):
 
         audio_feats = []
         if self.fbank_dim > 0:
-            if self.pool:
-                func = partial(torchaudio.compliance.kaldi.fbank,
-                        num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift) 
-                fbank = torch.stack(list(self.pool.map(func, collated_sources.unsqueeze(1))), dim=0)
-            else:
-                fbank = torch.stack([
-                    torchaudio.compliance.kaldi.fbank(
-                        feats.view(1, -1), num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift)
-                    for feats in collated_sources], dim=0)
+            fbank = torch.stack([
+                torchaudio.compliance.kaldi.fbank(
+                    feats.view(1, -1), num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
+                    frame_length=self.frame_length, frame_shift=self.frame_shift)
+                for feats in collated_sources], dim=0)
             audio_feats.append(fbank)
         if self.mfcc_dim > 0:
-            if self.pool:
-                mfcc = torch.stack(list(self.pool.map(func, collated_sources.unsqueeze(1))), dim=0)
-            else:
-                mfcc = torch.stack([
-                    torchaudio.compliance.kaldi.mfcc(
-                        feats.view(1, -1), num_ceps=self.mfcc_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift)
-                    for feats in collated_sources], dim=0)
+            mfcc = torch.stack([
+                torchaudio.compliance.kaldi.mfcc(
+                    feats.view(1, -1), num_ceps=self.mfcc_dim, sample_frequency=self.sample_rate,
+                    frame_length=self.frame_length, frame_shift=self.frame_shift)
+                for feats in collated_sources], dim=0)
             audio_feats.append(mfcc)
         if len(audio_feats) == 0:
             audio_feats = None
@@ -362,27 +349,18 @@ class NCropFileAudioFeatDataset(FileAudioFeatDataset):
 
         audio_feats = []
         if self.fbank_dim > 0:
-            if self.pool:
-                func = partial(torchaudio.compliance.kaldi.fbank,
-                        num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift) 
-                fbank = torch.stack(list(self.pool.map(func, collated_sources.unsqueeze(1))), dim=0)
-            else:
-                fbank = torch.stack([
-                    torchaudio.compliance.kaldi.fbank(
-                        feats.view(1, -1), num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift)
-                    for feats in collated_sources], dim=0)
+            fbank = torch.stack([
+                torchaudio.compliance.kaldi.fbank(
+                    feats.view(1, -1), num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
+                    frame_length=self.frame_length, frame_shift=self.frame_shift)
+                for feats in collated_sources], dim=0)
             audio_feats.append(fbank)
         if self.mfcc_dim > 0:
-            if self.pool:
-                mfcc = torch.stack(list(self.pool.map(func, collated_sources.unsqueeze(1))), dim=0)
-            else:
-                mfcc = torch.stack([
-                    torchaudio.compliance.kaldi.mfcc(
-                        feats.view(1, -1), num_ceps=self.mfcc_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift)
-                    for feats in collated_sources], dim=0)
+            mfcc = torch.stack([
+                torchaudio.compliance.kaldi.mfcc(
+                    feats.view(1, -1), num_ceps=self.mfcc_dim, sample_frequency=self.sample_rate,
+                    frame_length=self.frame_length, frame_shift=self.frame_shift)
+                for feats in collated_sources], dim=0)
             audio_feats.append(mfcc)
 
         if len(audio_feats) == 0:
@@ -440,7 +418,6 @@ class FileAudioFeatClassificationDataset(RawAudioDataset):
         self.mfcc_dim = mfcc_dim
         self.frame_length = frame_length
         self.frame_shift = frame_shift
-        self.pool = None
 
         self.fnames = []
         self.labels = []
@@ -521,27 +498,18 @@ class FileAudioFeatClassificationDataset(RawAudioDataset):
 
         audio_feats = []
         if self.fbank_dim > 0:
-            if self.pool:
-                func = partial(torchaudio.compliance.kaldi.fbank,
-                        num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift) 
-                fbank = torch.stack(list(self.pool.map(func, collated_sources.unsqueeze(1))), dim=0)
-            else:
-                fbank = torch.stack([
-                    torchaudio.compliance.kaldi.fbank(
-                        feats.view(1, -1), num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift)
-                    for feats in collated_sources], dim=0)
+            fbank = torch.stack([
+                torchaudio.compliance.kaldi.fbank(
+                    feats.view(1, -1), num_mel_bins=self.fbank_dim, sample_frequency=self.sample_rate,
+                    frame_length=self.frame_length, frame_shift=self.frame_shift)
+                for feats in collated_sources], dim=0)
             audio_feats.append(fbank)
         if self.mfcc_dim > 0:
-            if self.pool:
-                mfcc = torch.stack(list(self.pool.map(func, collated_sources.unsqueeze(1))), dim=0)
-            else:
-                mfcc = torch.stack([
-                    torchaudio.compliance.kaldi.mfcc(
-                        feats.view(1, -1), num_ceps=self.mfcc_dim, sample_frequency=self.sample_rate,
-                        frame_length=self.frame_length, frame_shift=self.frame_shift)
-                    for feats in collated_sources], dim=0)
+            mfcc = torch.stack([
+                torchaudio.compliance.kaldi.mfcc(
+                    feats.view(1, -1), num_ceps=self.mfcc_dim, sample_frequency=self.sample_rate,
+                    frame_length=self.frame_length, frame_shift=self.frame_shift)
+                for feats in collated_sources], dim=0)
             audio_feats.append(mfcc)
         if len(audio_feats) == 0:
             audio_feats = None

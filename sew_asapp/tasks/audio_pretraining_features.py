@@ -15,8 +15,6 @@ from fairseq.tasks import FairseqTask, register_task
 from fairseq import utils
 from fairseq.logging import metrics
 
-from fairseq.tasks.audio_pretraining import AudioPretrainingTask, AudioPretrainingConfig
-
 from ..data.audio_feat_dataset import FileAudioFeatDataset, FileAudioDatasetV2
 
 class LabelEncoder(object):
@@ -30,7 +28,58 @@ class LabelEncoder(object):
 
 
 @dataclass
-class AudioPretrainingFeaturesConfig(AudioPretrainingConfig):
+class AudioPretrainingFeaturesConfig(FairseqDataclass):
+    data: str = field(default=MISSING, metadata={"help": "path to data directory"})
+    labels: Optional[str] = field(
+        default=None,
+        metadata={"help": "extension of the label file to load, used for fine-tuning"},
+    )
+    sample_rate: int = field(
+        default=16_000,
+        metadata={
+            "help": "target sample rate. audio files will be up/down sampled to this rate"
+        },
+    )
+    normalize: bool = field(
+        default=False,
+        metadata={"help": "if set, normalizes input to have 0 mean and unit variance"},
+    )
+    enable_padding: bool = field(
+        default=False, metadata={"help": "pad shorter samples instead of cropping"}
+    )
+    max_sample_size: Optional[int] = field(
+        default=None, metadata={"help": "max sample size to crop to for batching"}
+    )
+    min_sample_size: Optional[int] = field(
+        default=None, metadata={"help": "min sample size to skip small examples"}
+    )
+
+    # Options for reporting WER metrics during validation. Only applicable to
+    # Seq2Seq models during fine-tuning
+    eval_wer: bool = field(
+        default=False, metadata={"help": "compute WER for Seq2Seq models"}
+    )
+    eval_wer_config: GenerationConfig = field(
+        default_factory=lambda: GenerationConfig(),
+        metadata={"help": "beam search config for evaluating wer during training"},
+    )
+    eval_wer_tokenizer: Any = field(
+        default=None,
+        metadata={"help": "tokenizer config for evaluating wer during training"},
+    )
+    eval_wer_post_process: str = field(
+        default="letter",
+        metadata={
+            "help": "remove BPE tokens before scoring (can be sentencepiece, letter, and more)"
+        },
+    )
+    autoregressive: bool = field(
+        default=False,
+        metadata={
+            "help": "required for autoregressive decoders (like seq2seq models); "
+            "adds 'prev_output_tokens' to input and appends eos to target"
+        },
+    )
     # new
     load_with_librosa: bool = field(
         default=False,
