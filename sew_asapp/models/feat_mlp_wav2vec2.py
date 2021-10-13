@@ -695,11 +695,18 @@ class FeatMLPWav2Vec2Model(BaseFairseqModel):
         unmasked_features = features.clone()
 
         if padding_mask is not None:
-            extra = padding_mask.size(1) % features.size(1)
-            if extra > 0:
-                padding_mask = padding_mask[:, :-extra]
-            padding_mask = padding_mask.view(padding_mask.size(0), features.size(1), -1)
-            padding_mask = padding_mask.all(-1)
+            input_lengths = (1 - padding_mask.long()).sum(-1)
+            # apply conv formula to get real output_lengths
+            output_lengths = self._get_feat_extract_output_lengths(input_lengths)
+
+            padding_mask = torch.zeros(
+                features.shape[:2], dtype=features.dtype, device=features.device
+            )
+
+            # these two operations makes sure that all values
+            # before the output lengths indices are attended to
+            padding_mask[(torch.arange(padding_mask.shape[0], device=padding_mask.device), output_lengths - 1)] = 1
+            padding_mask = (1 - padding_mask.flip([-1]).cumsum(-1).flip([-1])).bool()
 
         if self.post_extract_proj is not None:
             features = self.post_extract_proj(features)
