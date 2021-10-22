@@ -28,19 +28,15 @@ SEW-D-mid        | 400K | [Librispeech 960h](http://www.openslr.org/12) | [downl
 SEW-D-mid (k127) | 400K | [Librispeech 960h](http://www.openslr.org/12) | [download](https://papers-sew.awsdev.asapp.com/save-pre/sew-d-mid-k127-400k.pt)
 SEW-D-base+      | 400K | [Librispeech 960h](http://www.openslr.org/12) | [download](https://papers-sew.awsdev.asapp.com/save-pre/sew-d-base%2B-400k.pt)
 
-<!-- </p></details> -->
-
-<!-- <details><summary>Semi-supervised Librispeech ASR model (click to unfold)</summary><p>
-
+### ASR model fine-tuned on LibriSpeech train-clean 100h
 Model | Pre-training updates | Finetuning split | Model
 |---|---|---|---
-SEW-tiny    | 100K | 100 hours | [download]()
-SEW-D-mid   | 100K | 100 hours | [download]()
-SEW-D-mid   | 400K | 100 hours | [download]()
-SEW-D-base+ | 100K | 100 hours | [download]()
-SEW-D-base+ | 400K | 100 hours | [download]()
+SEW-tiny    | 100K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-tiny-100k-ft-ls100h.pt)
+SEW-D-tiny  | 100K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-tiny-100k-ft-ls100h.pt)
+SEW-D-mid   | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-mid-400k-ft-ls100h.pt)
+SEW-D-mid (k127) | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-mid-k127-400k-ft-ls100h.pt)
+SEW-D-base+ | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-base+-400k-ft-ls100h.pt)
 
-</p></details> -->
 
 ## Usage
 
