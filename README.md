@@ -35,7 +35,7 @@ SEW-tiny    | 100K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-
 SEW-D-tiny  | 100K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-tiny-100k-ft-ls100h.pt)
 SEW-D-mid   | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-mid-400k-ft-ls100h.pt)
 SEW-D-mid (k127) | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-mid-k127-400k-ft-ls100h.pt)
-SEW-D-base+ | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-base+-400k-ft-ls100h.pt)
+SEW-D-base+ | 400K | 100h | [download](https://papers-sew.awsdev.asapp.com/save-ft-100h/sew-d-base%2B-400k-ft-ls100h.pt)
 
 
 ## Usage
